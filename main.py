@@ -3,14 +3,9 @@ import matplotlib.pyplot as plt
 import math
 
 def line_drawing(x0, y0, x1, y1, thickness, color=(255,255,255)):
-
     dx = x1-x0
     print("x0", x0)
     dy = y1-y0
-    if(dy>dx):
-        temp = dx
-        dx = dy
-        dy = temp
     dir = -1 if dy < 0 else 1
     y = y0
     p = 2*dy - dx
