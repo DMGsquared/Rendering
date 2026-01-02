@@ -40,6 +40,7 @@ def randomizer(canvas: dh.Canvas,
     for i in range(choice):
         points1 = []
         points2 = []
+        points3 = []
         chooser = random.randint(1,2)
         if(chooser==1):
             p1 = [random.randint(round(w*margin_start_widthR),round(w*margin_end_widthR)),random.randint(round(h*margin_start_heightR),round(h*margin_end_heightR))]
@@ -47,25 +48,25 @@ def randomizer(canvas: dh.Canvas,
             s1 = dummy_canvas.create_point_set(p1[0], p1[1], p2[0], p2[1])
             ratio = random.random()*(ratio_rangeB-ratio_rangeA)+ratio_rangeA
             #print(ratio)
-            points1 = dummy_canvas.draw_rectangle_2p(s1,ratio**(-1**random.randint(1,2)), fill=True)
+            points1, points2 = dummy_canvas.draw_rectangle_2p(s1,ratio**(-1**random.randint(1,2)), fill=True)
             for point in points1:
                 dummy_canvas.erase()
-                temp = dummy_canvas.draw_arc_extended([point], object_size, fill=True, color=(255,0,255))
-                points2 = points2 + temp
+                temp1, temp2 = dummy_canvas.draw_arc_extended([point], object_size, fill=True, color=(255,0,255))
+                points3 = points3 + temp1 +temp2
         else:
-            points1 = dummy_canvas.draw_arc_extended([[random.randint(round(w*margin_start_widthC),round(w*margin_end_widthC)),random.randint(round(h*margin_start_heightC),round(h*margin_end_heightC))]], 
+            points1, points2 = dummy_canvas.draw_arc_extended([[random.randint(round(w*margin_start_widthC),round(w*margin_end_widthC)),random.randint(round(h*margin_start_heightC),round(h*margin_end_heightC))]], 
             random.randint(round(h*circle_size_rangeA), round(h*circle_size_rangeB)), fill=True, color=(225,225,225))
             for point in points1:
                 dummy_canvas.erase()
-                temp = dummy_canvas.draw_arc_extended([point], object_size, fill=True, color=(255,0,255))
-                points2 = points2 + temp
+                temp1, temp2 = dummy_canvas.draw_arc_extended([point], object_size, fill=True, color=(255,0,255))
+                points3 = points3 + temp1 + temp2
         dummy_canvas.erase()
         #print("points2", points2)
         for point in points1:
             if point in pointsM1:
                 has_intersection = True
-        pointsM1 = pointsM1 + points1
-        pointsM2 = pointsM2 + points2
+        pointsM1 = pointsM1 + points1 + points2
+        pointsM2 = pointsM2 + points3
     return pointsM1, pointsM2, has_intersection
 
 

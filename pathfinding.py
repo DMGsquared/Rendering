@@ -6,7 +6,7 @@ import random
 import heapq
 import dataGen as dg
 D = 10
-D2 = 30
+D2 = 14
 class PointNode:
     def __init__(self) -> None:
         self.parent_x = 0
@@ -20,6 +20,8 @@ def calc_H(x,y, dest):
     dx = abs(dest[0]-x)
     dy = abs(dest[1]-y)
     H = D*(dx+dy)+(D2-2*D)*min(dx,dy)
+    #H = round(D*math.sqrt(dx**2+dy**2))
+    #H = dx+dy
     return H
 def is_valid(canvas:dh.Canvas,x,y):
     #print("x",x)
@@ -95,7 +97,7 @@ def fill_algorithm(canvas: dh.Canvas, src):
                     g_new = node_details[y][x].g + D
                     h_new = 0
                     f_new = g_new+h_new
-
+                    
                     if node_details[new_y][new_x].f > f_new:
                         #print("Push")
                         heapq.heappush(open_list, (f_new,new_x,new_y))
@@ -147,7 +149,7 @@ def a_star_algorithm(canvas: dh.Canvas, src, dest):
         for dir in directions:
             new_x = x + dir[0]
             new_y = y + dir[1]
-
+            distance = D if abs(dir[0])+abs(dir[1]) == 1 else D2
             if(is_valid(canvas,new_x,new_y) and is_unblocked(canvas, new_x, new_y) and not closed_list[new_y][new_x]):
                 if is_destination(new_x,new_y,dest):
                     node_details[new_y][new_x].parent_x = x
@@ -158,7 +160,7 @@ def a_star_algorithm(canvas: dh.Canvas, src, dest):
                     return (found_path, path)
                 else:
                     #print("Calc")
-                    g_new = node_details[y][x].g + D
+                    g_new = node_details[y][x].g + distance
                     h_new = calc_H(new_x,new_y,dest)
                     f_new = g_new+h_new
 
@@ -180,7 +182,7 @@ def main():
     points, pathfinding_points, has_intersection = dg.randomizer(canvas, object_size= 3)
     print("Pathfinding", pathfinding_points[0])
     canvas.multipoint_plot(pathfinding_points, color = (255,0,255))
-    canvas.plot_pixel(pathfinding_points[0][0], pathfinding_points[0][1], (255,0,255))
+    #canvas.plot_pixel(pathfinding_points[0][0], pathfinding_points[0][1], (255,0,255))
     canvas.multipoint_plot(points)
     print("done")
     print("intersects", has_intersection)
@@ -190,7 +192,7 @@ def main():
     if(a_star_result[0]):
         for point in a_star_result[1]:
                canvas.plot_pixel(point[0],point[1],(32,255,32))
-        print(a_star_result[1])
+        #print(a_star_result[1])
     canvas.render()
     
 

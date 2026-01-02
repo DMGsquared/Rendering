@@ -133,7 +133,7 @@ class Canvas:
                     for point in s:
                         for edge_point in points1:
                             self.draw_line(point[0], point[1], edge_point[0], edge_point[1])
-        return points1 + s + points2
+        return points1 + s, points2
 
         
     def draw_poly(self,point_set: list, thickness = 0, color = (255,255,255)):
@@ -195,7 +195,7 @@ class Canvas:
                 for point in points2:
                     self.plot_pixel(point[0], point[1])
             
-        return points1 + points2
+        return points1, points2
             
                     
 
@@ -330,16 +330,16 @@ def trace_path(node_details: list, dest):
     return path
 def fill_algorithm(canvas: Canvas, src):
     if not is_valid(canvas, src[0], src[1]):
-        print("Failed")
+        #print("Failed")
         return (False, [])
     if not is_unblocked(canvas, src[0], src[1]):
-        print("Source or the destination is blocked")
+        #print("Source or the destination is blocked")
         return (False, [])
 
     
     closed_list = [[False for _ in range(canvas.point_width)] for _ in range(canvas.point_height)]
     node_details = [[PointNode() for _ in range(canvas.point_width)]for _ in range(canvas.point_height)]
-    print(len(closed_list), len(node_details))
+    #print(len(closed_list), len(node_details))
     x = src[0]
     y = src[1]
     node_details[y][x].f = 0.0
