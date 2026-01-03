@@ -110,20 +110,24 @@ def fill_algorithm(canvas: dh.Canvas, src):
 
 
 def a_star_algorithm(canvas: dh.Canvas, src, dest):
+    """
+    Takes in a map, start point, and end point and returns a boolean for if there is a path and then a list containing the path.
+    If there is no path it returns an empty list.
+    """
     if not is_valid(canvas, src[0], src[1], ) or not is_valid(canvas, dest[0], dest[1]):
-        print("Failed")
+        #print("Failed")
         return (False, [])
     if not is_unblocked(canvas, src[0], src[1]) or not is_unblocked(canvas, dest[0], dest[1]):
-        print("Source or the destination is blocked")
+        #print("Source or the destination is blocked")
         return (False, [])
 
     if is_destination(src[0], src[1], dest):
-        print("We are already at the destination")
+        #print("We are already at the destination")
         return (False, [])
     
     closed_list = [[False for _ in range(canvas.point_width)] for _ in range(canvas.point_height)]
     node_details = [[PointNode() for _ in range(canvas.point_width)]for _ in range(canvas.point_height)]
-    print(len(closed_list), len(node_details))
+    #print(len(closed_list), len(node_details))
     x = src[0]
     y = src[1]
     node_details[y][x].f = 0.0
@@ -134,7 +138,7 @@ def a_star_algorithm(canvas: dh.Canvas, src, dest):
 
     open_list = []
     heapq.heappush(open_list, (0.0,x,y))
-    print("openlen", len(open_list))
+    #print("openlen", len(open_list))
     found_path = False
 
     while len(open_list) > 0:
@@ -173,13 +177,14 @@ def a_star_algorithm(canvas: dh.Canvas, src, dest):
                         node_details[new_y][new_x].parent_x = x
                         node_details[new_y][new_x].parent_y = y
     if(not found_path):
-         print("No path")
+        pass
+         #print("No path")
     return(found_path, path)
     
     
 def main():
     canvas = dh.Canvas(128,72)
-    points, pathfinding_points, has_intersection = dg.randomizer(canvas, object_size= 3)
+    points, pathfinding_points, has_intersection = dg.randomizer(canvas, object_size= 2, choices=[3,4,5,6,7])
     print("Pathfinding", pathfinding_points[0])
     canvas.multipoint_plot(pathfinding_points, color = (255,0,255))
     #canvas.plot_pixel(pathfinding_points[0][0], pathfinding_points[0][1], (255,0,255))
@@ -193,7 +198,7 @@ def main():
         for point in a_star_result[1]:
                canvas.plot_pixel(point[0],point[1],(32,255,32))
         #print(a_star_result[1])
-    canvas.render()
+    canvas.render(10)
     
 
 if __name__ == "__main__":

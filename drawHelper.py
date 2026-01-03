@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
+import pynputHelper as pyn
 import math
 import heapq
 
@@ -9,7 +11,15 @@ class Canvas:
         self.width, self.height, self.color_channels = width*pixel_to_point_ratio, height*pixel_to_point_ratio, color_channels
         self._canvas = np.zeros((self.height, self.width, color_channels),dtype=np.uint8)
         self.ptp = pixel_to_point_ratio
-        print("Init")
+        self.monitor = self.create_keyboard_monitor(pyn.base_action_set)
+        #print("Init")
+
+
+    def create_keyboard_monitor(self, action_set):
+        monitor = pyn.keyboard_monitor(action_set)
+        monitor.start()
+
+
     def create_point_set(self, *points: int):
         if(len(points)%2 != 0):
             raise ValueError("Unfinished coordinate")
@@ -262,8 +272,14 @@ class Canvas:
         for i in range(pixels_y+1, pixels_y_end+1):
             for j in range(pixels_x+1,pixels_x_end):
                 self.plot_pixel(j,i, color)
-    def render(self):
-        print("opening")
+    def render(self, scalar = 1):
+        image = self._canvas
+        image = np.repeat(image, scalar, axis=0)
+        image = np.repeat(image, scalar, axis=1)
+        cv2.imshow("Map", image)
+        cv2.waitKey(0)
+    def render_depreciated(self):
+        #print("opening")
         plt.imshow(self._canvas)
         plt.axis("off")
         plt.show()
